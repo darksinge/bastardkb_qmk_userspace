@@ -75,7 +75,7 @@ enum {
 };
 
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_AMETHYST] = ACTION_TAP_DANCE_DOUBLE(AMETHYST, LCTL_T(AMETHYST)),
+    [TD_AMETHYST] = ACTION_TAP_DANCE_DOUBLE(AMETHYST, C(AMETHYST)),
 };
 
 // clang-format off
@@ -105,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_DEL, KC_PERC, KC_PERC, KC_LBRC, KC_RBRC, QK_GESC,     KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                            LCTL_T(KC_UP), XXXXXXX, KC_CAPS,    KC_SPC, KC_ESC,
+                            C(KC_UP), XXXXXXX, KC_CAPS,    KC_SPC, KC_ESC,
                                            XXXXXXX, XXXXXXX,      KC_ENT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
