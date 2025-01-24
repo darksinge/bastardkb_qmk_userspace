@@ -42,6 +42,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
 #endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
+#define HOME TO(LAYER_BASE)
 #define LOWER MO(LAYER_LOWER)
 #define RAISE MO(LAYER_RAISE)
 #define AMETHYST S(KC_LALT)
@@ -69,30 +70,30 @@ static uint16_t auto_pointer_layer_timer = 0;
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-        KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,    KC_9,    KC_0, KC_MINS,
+       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,    KC_9,    KC_0, KC_MINS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,    KC_O,    KC_P, KC_BSLS,
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,    KC_O,    KC_P, KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_MINS,    CTL_A,   ALT_S,  GUI_D,    KC_F,    KC_G,       KC_H,    KC_J,   KC_K,  KC_L, CTL_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_LCTL,    PT_Z,    KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM,  KC_DOT, PT_SLSH, KC_LALT,
+       KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM,  KC_DOT, PT_SLSH, KC_LALT,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, LOWER,   KC_ENT,      KC_SPC,  KC_BSPC,
-                                           RAISE, KC_LGUI,     AMETHYST
+                                           RAISE, KC_LGUI,       AMETHYST
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
   [LAYER_LOWER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_TILD,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,    KC_F8,    KC_F9,   KC_F10, KC_F11,
+       TO(LAYER_BASE),  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,    KC_F8,    KC_F9,   KC_F10, KC_F11,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        RGB_MOD,  KC_NO,   KC_AT,   KC_LCBR, KC_RCBR, XXXXXXX,   KC_UNDS,  KC_PLUS, KC_ASTR,  KC_EXLM, KC_RBRC, KC_F12,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        RGB_TOG,  KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_TAB,    KC_MINS,  KC_EQL,   KC_GT,   KC_PIPE, KC_TILD, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_DEL, KC_PERC, KC_PERC, KC_LBRC, KC_RBRC, QK_GESC,   KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______,
+       KC_DEL, KC_PERC, KC_PERC, KC_LBRC, KC_RBRC, QK_GESC,     KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                            LCTL_T(KC_UP), XXXXXXX, _______,    XXXXXXX, KC_ESC,
+                            LCTL_T(KC_UP), XXXXXXX, KC_CAPS,    CW_TOGG, KC_ESC,
                                            XXXXXXX, XXXXXXX,      KC_ENT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
