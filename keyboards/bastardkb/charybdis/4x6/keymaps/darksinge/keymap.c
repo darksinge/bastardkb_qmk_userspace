@@ -118,11 +118,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        TOHOME,  EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,    QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  EE_CLR,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD,    S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, DPI_MOD, S_D_MOD,    S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       S(KC_BTN3), KC_LCTL, KC_LALT, KC_LGUI, G(KC_F), XXXXXXX,    XXXXXXX, KC_RSFT, KC_RGUI, KC_RALT, KC_RCTL, XXXXXXX,
+       S(KC_BTN3), G(KC_A), G(KC_S), G(KC_D), G(KC_F), XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, DRGSCRL, SNIPING, G(KC_C), G(KC_V), XXXXXXX,    DPI_MOD, DPI_RMOD, SNIPING, DRGSCRL, _______, XXXXXXX,
+       XXXXXXX, DRGSCRL, SNIPING, G(KC_C), G(KC_V), XXXXXXX,    DPI_MOD, DPI_RMOD, KC_BTN4, KC_BTN5, _______, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_BTN1, KC_BTN2, SNP_TOG,    KC_BTN4, DRG_TOG,
                                            KC_BTN3, DRG_TOG,    KC_BTN5
