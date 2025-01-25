@@ -92,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   KC_K,   KC_L,   CTL_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       POINTER,   ALT_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, QK_REP,
+       POINTER,   ALT_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, POINTER,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, LOWER,   KC_ENT,      KC_SPC,  KC_BSPC,
                                            KC_LCTL, KC_LGUI,       AMETHYST
@@ -124,8 +124,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, DRGSCRL, SNIPING, G(KC_C), G(KC_V), XXXXXXX,    DPI_MOD, DPI_RMOD, SNIPING, DRGSCRL, _______, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  KC_BTN1, KC_BTN2, SNP_TOG,    KC_BTN2, DRG_TOG,
-                                           KC_BTN3, DRG_TOG,    KC_BTN3
+                                  KC_BTN1, KC_BTN2, SNP_TOG,    KC_BTN4, DRG_TOG,
+                                           KC_BTN3, DRG_TOG,    KC_BTN5
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
