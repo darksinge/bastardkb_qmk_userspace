@@ -23,8 +23,8 @@
 enum charybdis_keymap_layers {
     LAYER_BASE = 0,
     LAYER_LOWER,
-    LAYER_RAISE,
     LAYER_POINTER,
+    LAYER_RAISE,
     LAYER_GAMING,
 };
 
@@ -51,6 +51,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define AMETHYST S(KC_LALT)
 #define PT_Z LT(LAYER_POINTER, KC_Z)
 #define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
+#define S_MS3 S(KC_BTN3)
 
 #ifndef POINTING_DEVICE_ENABLE
 #    define DRGSCRL KC_NO
@@ -107,25 +108,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        RGB_TOG,  KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_TAB,    KC_MINS,  KC_EQL,   KC_GT,   KC_PIPE, KC_TILD, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_DEL, KC_PERC, KC_PERC, KC_LBRC, KC_RBRC, KC_GRAVE,     KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, GAMING,
+       KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,        KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, GAMING,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                            C(KC_UP), XXXXXXX, KC_CAPS,    KC_SPC, KC_ESC,
+                            C(KC_UP), XXXXXXX, KC_CAPS,           KC_SPC, KC_ESC,
                                            XXXXXXX, XXXXXXX,      KC_ENT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
+
+
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       TOHOME,  EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,    QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  EE_CLR,
+       TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR, QK_BOOT,    QK_BOOT, EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, DPI_MOD, S_D_MOD,    S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       S(KC_BTN3), G(KC_A), G(KC_S), G(KC_D), G(KC_F), XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       SNIPING, G(KC_A), G(KC_S), G(KC_D), G(KC_F), S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, DRGSCRL, SNIPING, G(KC_C), G(KC_V), XXXXXXX,    DPI_MOD, DPI_RMOD, KC_BTN4, KC_BTN5, _______, XXXXXXX,
+       XXXXXXX, DRGSCRL, S_MS3, G(KC_C), G(KC_V), S_D_RMOD, DPI_RMOD, XXXXXXX, KC_BTN4, KC_BTN5, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_BTN1, KC_BTN2, SNP_TOG,    KC_BTN4, DRG_TOG,
-                                           KC_BTN3, DRG_TOG,    KC_BTN5
+                                           KC_BTN3, S_MS3,    KC_BTN5
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -162,6 +165,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 // clang-format on
+
+#ifdef RGBLIGHT_LAYERS
+const rgblight_segment_t PROGMEM base_layer[]    = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_GREEN});
+const rgblight_segment_t PROGMEM lower_layer[]   = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_BLUE});
+const rgblight_segment_t PROGMEM pointer_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_PURPLE});
+const rgblight_segment_t PROGMEM raise_layer[]   = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_RED});
+const rgblight_segment_t PROGMEM gaming_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_CYAN});
+
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(base_layer, lower_layer, pointer_layer, raise_layer, gaming_layer);
+
+#endif // RGBLIGHT_LAYERS
+
+void keyboard_post_init_user(void) {
+    // keyboard_post_init_rgb();
+#ifdef RGBLIGHT_LAYERS
+    rgblight_layers = my_rgb_layers;
+#else
+    rgblight_sethsv_noeeprom(HSV_BLUE);
+#endif
+    /*debug_enable=true;*/
+    /*debug_matrix=true;*/
+}
 
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE

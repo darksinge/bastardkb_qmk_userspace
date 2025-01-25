@@ -37,7 +37,14 @@
 
 #define TAPPING_TERM 225
 
-//#define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-
 #define CHARYBDIS_DRAGSCROLL_REVERSE_Y // inverts vertical scrolling
+
+//#define ___RGBLIGHT_LAYERS____
+
+#ifdef RGBLIGHT_LAYERS
+/* RGB configuration. */
+#define RGBLIGHT_DEFAULT_ON true
+#define RGBLIGHT_LED_COUNT 56
+#endif // RGBLIGHT_LAYERS
+
 
