@@ -47,6 +47,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LOWER MO(LAYER_LOWER)
 #define RAISE MO(LAYER_RAISE)
 #define POINTER MO(LAYER_POINTER)
+#define GAMING TO(LAYER_GAMING)
 #define AMETHYST S(KC_LALT)
 #define PT_Z LT(LAYER_POINTER, KC_Z)
 #define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
@@ -57,6 +58,8 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    define DPI_RMOD KC_NO
 #    define S_D_MOD KC_NO
 #    define SNIPING KC_NO
+#    define DRG_TOG KC_NO
+#    define SNP_TOG KC_NO
 #endif // !POINTING_DEVICE_ENABLE
 
 // Left-hand home row mods
@@ -104,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        RGB_TOG,  KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_TAB,    KC_MINS,  KC_EQL,   KC_GT,   KC_PIPE, KC_TILD, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_DEL, KC_PERC, KC_PERC, KC_LBRC, KC_RBRC, QK_GESC,     KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, TO(LAYER_GAMING),
+       KC_DEL, KC_PERC, KC_PERC, KC_LBRC, KC_RBRC, KC_GRAVE,     KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, GAMING,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                             C(KC_UP), XXXXXXX, KC_CAPS,    KC_SPC, KC_ESC,
                                            XXXXXXX, XXXXXXX,      KC_ENT
@@ -117,12 +120,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD,    S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,    XXXXXXX, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, XXXXXXX,
+       S(KC_BTN3), KC_LCTL, KC_LALT, KC_LGUI, G(KC_F), XXXXXXX,    XXXXXXX, KC_RSFT, KC_RGUI, KC_RALT, KC_RCTL, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, _______, XXXXXXX,
+       XXXXXXX, DRGSCRL, SNIPING, G(KC_C), G(KC_V), XXXXXXX,    DPI_MOD, DPI_RMOD, SNIPING, DRGSCRL, _______, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  KC_BTN1, KC_BTN2, DPI_MOD,    KC_BTN2, KC_BTN1,
-                                           KC_BTN3, DPI_RMOD,    KC_BTN3
+                                  KC_BTN1, KC_BTN2, SNP_TOG,    KC_BTN2, DRG_TOG,
+                                           KC_BTN3, DRG_TOG,    KC_BTN3
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -149,12 +152,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_MINS,   KC_A,   KC_S,   KC_D,   KC_F,    KC_G,       KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
+       KC_MINS,   KC_A,   KC_S,   KC_D,   KC_F,    KC_G,          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_LCTL,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TOHOME,
+       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, KC_SPC,   KC_ENT,      KC_SPC,  KC_BSPC,
-                                           KC_LALT, KC_LGUI,       AMETHYST
+                                           KC_LCTL, KC_LALT,       TOHOME
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 };

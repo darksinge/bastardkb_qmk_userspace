@@ -37,3 +37,7 @@
 
 #define TAPPING_TERM 225
 
+//#define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
+
+#define CHARYBDIS_DRAGSCROLL_REVERSE_Y // inverts vertical scrolling
+
