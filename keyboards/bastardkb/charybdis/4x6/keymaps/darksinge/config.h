@@ -36,6 +36,7 @@
 #endif // POINTING_DEVICE_ENABLE
 
 #define TAPPING_TERM 225
+#define TAPPING_TOGGLE 1
 
 #define CHARYBDIS_DRAGSCROLL_REVERSE_Y // inverts vertical scrolling
 

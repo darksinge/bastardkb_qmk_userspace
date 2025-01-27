@@ -93,10 +93,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   KC_K,   KC_L,   CTL_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       POINTER,   ALT_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, POINTER,
+       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TT(POINTER),
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  KC_LSFT, LOWER,   KC_ENT,      KC_SPC,  KC_BSPC,
-                                           KC_LCTL, KC_LGUI,       AMETHYST
+                                  KC_LSFT, LOWER,   KC_ENT,       KC_SPC,  KC_BSPC,
+                                           KC_LCTL, KC_LGUI,      AMETHYST
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -119,16 +119,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR, QK_BOOT,    QK_BOOT, EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
+       TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR, QK_BOOT,     QK_BOOT, EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       SNIPING, G(KC_A), G(KC_S), G(KC_D), G(KC_F), S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       SNP_TOG, G(KC_A), G(KC_S), G(KC_D), KC_LSFT, S_D_MOD,    DPI_MOD, SNP_TOG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, DRGSCRL, S_MS3, G(KC_C), G(KC_V), S_D_RMOD, DPI_RMOD, XXXXXXX, KC_BTN4, KC_BTN5, XXXXXXX, XXXXXXX,
+       XXXXXXX, G(KC_Z), G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,   DPI_RMOD, DRG_TOG, KC_BTN5, KC_BTN4, KC_BTN1, TOHOME,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  KC_BTN1, KC_BTN2, SNP_TOG,    KC_BTN4, DRG_TOG,
-                                           KC_BTN3, S_MS3,    KC_BTN5
+                                  KC_BTN1, KC_BTN2, KC_BTN3,    KC_BTN5, KC_BTN4,
+                                           DRGSCRL, S_MS3,      KC_BTN1
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -166,27 +166,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-#ifdef RGBLIGHT_LAYERS
-const rgblight_segment_t PROGMEM base_layer[]    = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_GREEN});
-const rgblight_segment_t PROGMEM lower_layer[]   = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_BLUE});
-const rgblight_segment_t PROGMEM pointer_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_PURPLE});
-const rgblight_segment_t PROGMEM raise_layer[]   = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_RED});
-const rgblight_segment_t PROGMEM gaming_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_CYAN});
+// #ifdef RGBLIGHT_LAYERS
+// const rgblight_segment_t PROGMEM base_layer[]    = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_GREEN});
+// const rgblight_segment_t PROGMEM lower_layer[]   = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_BLUE});
+// const rgblight_segment_t PROGMEM pointer_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_PURPLE});
+// const rgblight_segment_t PROGMEM raise_layer[]   = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_RED});
+// const rgblight_segment_t PROGMEM gaming_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_CYAN});
 
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(base_layer, lower_layer, pointer_layer, raise_layer, gaming_layer);
+// const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(base_layer, lower_layer, pointer_layer, raise_layer, gaming_layer);
 
-#endif // RGBLIGHT_LAYERS
+// #endif // RGBLIGHT_LAYERS
 
-void keyboard_post_init_user(void) {
-    // keyboard_post_init_rgb();
-#ifdef RGBLIGHT_LAYERS
-    rgblight_layers = my_rgb_layers;
-#else
-    rgblight_sethsv_noeeprom(HSV_BLUE);
-#endif
-    /*debug_enable=true;*/
-    /*debug_matrix=true;*/
-}
+// void keyboard_post_init_user(void) {
+//     // keyboard_post_init_rgb();
+// #ifdef RGBLIGHT_LAYERS
+//     rgblight_layers = my_rgb_layers;
+// #else
+//     rgblight_sethsv_noeeprom(HSV_BLUE);
+// #endif
+//     /*debug_enable=true;*/
+//     /*debug_matrix=true;*/
+// }
 
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
