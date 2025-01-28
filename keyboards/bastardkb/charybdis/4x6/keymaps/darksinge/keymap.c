@@ -58,6 +58,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    define DPI_MOD KC_NO
 #    define DPI_RMOD KC_NO
 #    define S_D_MOD KC_NO
+#    define S_D_RMOD KC_NO
 #    define SNIPING KC_NO
 #    define DRG_TOG KC_NO
 #    define SNP_TOG KC_NO
@@ -77,10 +78,12 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 enum {
     TD_AMETHYST,
+    // TD_DRGSCRL_UNDO,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
     [TD_AMETHYST] = ACTION_TAP_DANCE_DOUBLE(AMETHYST, C(AMETHYST)),
+    // [TD_DRGSCRL_UNDO] = ACTION_TAP_DANCE_DOUBLE(G(KC_Z), DRGSCRL),
 };
 
 // clang-format off
@@ -96,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TT(POINTER),
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, LOWER,   KC_ENT,       KC_SPC,  KC_BSPC,
-                                           KC_LCTL, KC_LGUI,      AMETHYST
+                                           KC_LGUI, KC_LCTL,      AMETHYST
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -117,18 +120,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
+  // [LAYER_POINTER] = LAYOUT(
+  // // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
+  //      TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR, QK_BOOT,     QK_BOOT, EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
+  // // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+  //      XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, UG_VALU,
+  // // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+  //      S_D_MOD, G(KC_A), G(KC_S), G(KC_D), G(KC_F), SNP_TOG,    DPI_MOD, SNP_TOG, XXXXXXX, XXXXXXX, XXXXXXX, UG_VALD,
+  // // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+  //      S_D_RMOD, G(KC_Z), G(KC_X), G(KC_C), G(KC_V), S_MS3,   DPI_RMOD, DRG_TOG, KC_BTN5, KC_BTN4, KC_BTN1, TOHOME,
+  // // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
+  //                                 KC_BTN1, KC_BTN2, KC_BTN3,    KC_BTN5, KC_BTN4,
+  //                                          DRGSCRL, XXXXXXX,      KC_LSFT
+  // //                            ╰───────────────────────────╯ ╰──────────────────╯
+  // ),
+
+
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR, QK_BOOT,     QK_BOOT, EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, UG_VALU,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       SNP_TOG, G(KC_A), G(KC_S), G(KC_D), KC_LSFT, S_D_MOD,    DPI_MOD, SNP_TOG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+       SNP_TOG, G(KC_A), G(KC_S), G(KC_D), G(KC_F), S_D_MOD,    DPI_MOD, SNP_TOG, XXXXXXX, XXXXXXX, XXXXXXX, UG_VALD,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, G(KC_Z), G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,   DPI_RMOD, DRG_TOG, KC_BTN5, KC_BTN4, KC_BTN1, TOHOME,
+       XXXXXXX, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,   DPI_RMOD, DRG_TOG, KC_BTN5, KC_BTN4, KC_BTN1, TOHOME,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_BTN1, KC_BTN2, KC_BTN3,    KC_BTN5, KC_BTN4,
-                                           DRGSCRL, S_MS3,      KC_BTN1
+                                           S_MS3, KC_LCTL,      KC_LSFT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -227,3 +246,28 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // Forward-declare this helper function since it is defined in rgb_matrix.c.
 void rgb_matrix_update_pwm_buffers(void);
 #endif
+
+// // #ifdef RGB_MATRIX_ENABLE
+// bool rgb_matrix_indicators_user(void) {
+//     uint8_t layer = get_highest_layer(layer_state); // Retrieve the current layer
+
+//     switch (layer) {
+//         case 0:
+//             rgb_matrix_set_color_all(0, 0, 255); // Blue for Layer 0
+//             break;
+//         case 1:
+//             rgb_matrix_set_color_all(255, 0, 0); // Red for Layer 1
+//             break;
+//         case 2:
+//             rgb_matrix_set_color_all(0, 255, 0); // Green for Layer 2
+//             break;
+//         case 3:
+//             rgb_matrix_set_color_all(255, 255, 0); // Yellow for Layer 3
+//             break;
+//         default:
+//             rgb_matrix_set_color_all(255, 255, 255); // White for unhandled layers
+//             break;
+//     }
+//     return true;
+// }
+// #endif
