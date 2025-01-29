@@ -39,7 +39,7 @@
 #define TAPPING_TOGGLE 1
 
 #define CHARYBDIS_DRAGSCROLL_REVERSE_Y // inverts vertical scrolling
-//#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_LAYER_STATE_ENABLE
 
 //#define ___RGBLIGHT_LAYERS____
 
@@ -50,3 +50,4 @@
 #endif // RGBLIGHT_LAYERS
 
 
+#define CHARYBDIS_CONFIG_SYNC

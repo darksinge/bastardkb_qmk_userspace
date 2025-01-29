@@ -76,21 +76,99 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define ALT_L LALT_T(KC_L)
 #define CTL_SCLN RCTL_T(KC_SCLN)
 
-enum {
-    TD_AMETHYST,
-    // TD_DRGSCRL_UNDO,
+enum tap_dance_actions {
+    TD_AMYST,
 };
 
-tap_dance_action_t tap_dance_actions[] = {
-    [TD_AMETHYST] = ACTION_TAP_DANCE_DOUBLE(AMETHYST, C(AMETHYST)),
-    // [TD_DRGSCRL_UNDO] = ACTION_TAP_DANCE_DOUBLE(G(KC_Z), DRGSCRL),
+enum custom_keycodes {
+    VI_SLCT_BLK = SAFE_RANGE,
 };
+
+typedef struct {
+    uint16_t tap;
+    uint16_t hold;
+    uint16_t held;
+} tap_dance_tap_hold_t;
+
+// Forward declarations of tap dance functions
+void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data);
+void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data);
+
+#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
+    { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_AMYST] = ACTION_TAP_DANCE_TAP_HOLD(KC_ESC, AMETHYST),
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    uint8_t             current_layer;
+    tap_dance_action_t *action;
+
+    switch (keycode) {
+        case TD(TD_AMYST):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+                tap_code16(tap_hold->tap);
+            }
+            break;
+        case VI_SLCT_BLK:
+            if (record->event.pressed) {
+                SEND_STRING("V$%");
+            }
+            break;
+#ifdef POINTING_DEVICE_ENABLE
+#    ifdef CHARYBDIS_AUTO_SNIPING_ON_LAYER
+        case KC_BTN3:
+            current_layer = get_highest_layer(layer_state);
+            if (get_mods() == MOD_BIT(KC_LSFT)) {
+                if (record->event.pressed) {
+                    charybdis_set_pointer_sniping_enabled(false);
+                } else {
+                    charybdis_set_pointer_sniping_enabled(layer_state_cmp(current_layer, CHARYBDIS_AUTO_SNIPING_ON_LAYER));
+                }
+            }
+            break;
+#    endif // CHARYBDIS_AUTO_SNIPING_ON_LAYER
+#endif     // POINTING_DEVICE_ENABLE
+    }
+    return true;
+};
+
+void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (state->pressed) { // If key is being held
+        if (state->count == 1
+#ifndef PERMISSIVE_HOLD
+            && !state->interrupted
+#endif
+        ) {
+            add_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
+            tap_hold->held = tap_hold->hold;
+        } else {
+            register_code16(tap_hold->tap); // Register tap action (KC_ESC)
+            tap_hold->held = tap_hold->tap;
+        }
+    }
+}
+
+void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (tap_hold->held) {
+        del_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
+        // unregister_code16(tap_hold->held); // Unregister the last registered key
+        tap_hold->held = 0;
+    }
+}
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_MINS,
+       C(KC_UP),    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_MINS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -99,7 +177,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TT(POINTER),
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, LOWER,   KC_ENT,       KC_SPC,  KC_BSPC,
-                                           KC_LGUI, KC_LCTL,      AMETHYST
+                                           KC_LGUI, KC_LCTL,      TD(TD_AMYST)
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -107,14 +185,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        TOHOME,  KC_F1,   KC_F2,    KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,    KC_F8,    KC_F9,   KC_F10, KC_F11,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       RGB_MOD,  KC_NO,   KC_AT,   KC_LCBR, KC_RCBR, KC_ENT,    KC_UNDS,  KC_PLUS, KC_ASTR,  KC_EXLM, KC_RBRC, KC_F12,
+       RGB_MOD, S(KC_ENT), KC_AT, KC_LCBR, KC_RCBR, VI_SLCT_BLK, KC_UNDS,  KC_PLUS, KC_ASTR,  KC_EXLM, KC_RBRC, KC_F12,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       RGB_TOG,  KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_TAB,    KC_MINS,  KC_EQL,   KC_GT,   KC_PIPE, KC_TILD, KC_SLSH,
+       RGB_TOG,  KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_TAB,      KC_MINS,  KC_EQL,   KC_GT,   KC_PIPE, KC_TILD, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,        KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, GAMING,
+       KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, GAMING,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                            C(KC_UP), XXXXXXX, KC_CAPS,           KC_SPC, KC_ESC,
-                                           XXXXXXX, XXXXXXX,      KC_ENT
+                                 C(KC_UP), XXXXXXX, KC_CAPS,      KC_SPC, KC_BSPC,
+                                           XXXXXXX, XXXXXXX,      KC_ESC
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -142,7 +220,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, UG_VALU,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       SNP_TOG, G(KC_A), G(KC_S), G(KC_D), G(KC_F), S_D_MOD,    DPI_MOD, SNP_TOG, XXXXXXX, XXXXXXX, XXXXXXX, UG_VALD,
+       SNP_TOG, G(KC_A), G(KC_S), G(KC_D), G(KC_F), S_D_MOD,    DPI_MOD, SNP_TOG, XXXXXXX, KC_LGUI, XXXXXXX, UG_VALD,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,   DPI_RMOD, DRG_TOG, KC_BTN5, KC_BTN4, KC_BTN1, TOHOME,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
@@ -185,28 +263,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// #ifdef RGBLIGHT_LAYERS
-// const rgblight_segment_t PROGMEM base_layer[]    = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_GREEN});
-// const rgblight_segment_t PROGMEM lower_layer[]   = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_BLUE});
-// const rgblight_segment_t PROGMEM pointer_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_PURPLE});
-// const rgblight_segment_t PROGMEM raise_layer[]   = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_RED});
-// const rgblight_segment_t PROGMEM gaming_layer[]  = RGBLIGHT_LAYER_SEGMENTS({0, 20, HSV_CYAN});
-
-// const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(base_layer, lower_layer, pointer_layer, raise_layer, gaming_layer);
-
-// #endif // RGBLIGHT_LAYERS
-
-// void keyboard_post_init_user(void) {
-//     // keyboard_post_init_rgb();
-// #ifdef RGBLIGHT_LAYERS
-//     rgblight_layers = my_rgb_layers;
-// #else
-//     rgblight_sethsv_noeeprom(HSV_BLUE);
-// #endif
-//     /*debug_enable=true;*/
-//     /*debug_matrix=true;*/
-// }
-
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
@@ -245,29 +301,37 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef RGB_MATRIX_ENABLE
 // Forward-declare this helper function since it is defined in rgb_matrix.c.
 void rgb_matrix_update_pwm_buffers(void);
-#endif
+#endif // RGB_MATRIX_ENABLE
 
-// // #ifdef RGB_MATRIX_ENABLE
-// bool rgb_matrix_indicators_user(void) {
-//     uint8_t layer = get_highest_layer(layer_state); // Retrieve the current layer
+bool rgb_matrix_indicators_user(void) {
+    uint8_t layer = get_highest_layer(layer_state); // Retrieve the current layer
 
-//     switch (layer) {
-//         case 0:
-//             rgb_matrix_set_color_all(0, 0, 255); // Blue for Layer 0
-//             break;
-//         case 1:
-//             rgb_matrix_set_color_all(255, 0, 0); // Red for Layer 1
-//             break;
-//         case 2:
-//             rgb_matrix_set_color_all(0, 255, 0); // Green for Layer 2
-//             break;
-//         case 3:
-//             rgb_matrix_set_color_all(255, 255, 0); // Yellow for Layer 3
-//             break;
-//         default:
-//             rgb_matrix_set_color_all(255, 255, 255); // White for unhandled layers
-//             break;
-//     }
-//     return true;
-// }
-// #endif
+    hsv_t red   = {0, 255, 255};
+    hsv_t green = {85, 255, 255};
+    hsv_t blue  = {170, 255, 255};
+
+    hsv_t hsv;
+    switch (layer) {
+        case 0:
+            hsv = blue;
+            break;
+        case 1:
+            hsv = red;
+            break;
+        case 2:
+            hsv = green;
+            break;
+        default:
+            hsv = blue;
+            break;
+    }
+
+    hsv.v = 50;
+
+    rgb_t rgb = hsv_to_rgb(hsv);
+    for (int i = 0; i < 56; i++) {
+        rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+    }
+
+    return true;
+}
