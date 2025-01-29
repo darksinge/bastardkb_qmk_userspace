@@ -168,7 +168,7 @@ void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       C(KC_UP),    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_MINS,
+       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_MINS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -183,7 +183,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_LOWER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       TOHOME,  KC_F1,   KC_F2,    KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,    KC_F8,    KC_F9,   KC_F10, KC_F11,
+       C(KC_UP),  KC_F1,   KC_F2,    KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,    KC_F8,    KC_F9,   KC_F10, KC_F11,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        RGB_MOD, S(KC_ENT), KC_AT, KC_LCBR, KC_RCBR, VI_SLCT_BLK, KC_UNDS,  KC_PLUS, KC_ASTR,  KC_EXLM, KC_RBRC, KC_F12,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -191,8 +191,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, GAMING,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                 C(KC_UP), XXXXXXX, KC_CAPS,      KC_SPC, KC_BSPC,
-                                           XXXXXXX, XXXXXXX,      KC_ESC
+                                 C(KC_UP), XXXXXXX, KC_CAPS,      KC_SPC, XXXXXXX,
+                                           XXXXXXX, XXXXXXX,    S(KC_ENT)
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -225,7 +225,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        XXXXXXX, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,   DPI_RMOD, DRG_TOG, KC_BTN5, KC_BTN4, KC_BTN1, TOHOME,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_BTN1, KC_BTN2, KC_BTN3,    KC_BTN5, KC_BTN4,
-                                           S_MS3, KC_LCTL,      KC_LSFT
+                                           S_MS3, SNP_TOG,      KC_LSFT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -310,6 +310,10 @@ bool rgb_matrix_indicators_user(void) {
     hsv_t green = {85, 255, 255};
     hsv_t blue  = {170, 255, 255};
 
+    hsv_t hsv_white = {0, 0, 255};
+    hsv_white.v     = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
+    rgb_t rgb_white = hsv_to_rgb(hsv_white);
+
     hsv_t hsv;
     switch (layer) {
         case 0:
@@ -328,9 +332,22 @@ bool rgb_matrix_indicators_user(void) {
 
     hsv.v = 50;
 
+    uint8_t arrow_key_indexes[] = {48, 41, 40, 33};
+
     rgb_t rgb = hsv_to_rgb(hsv);
     for (int i = 0; i < 56; i++) {
-        rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+        if (layer == LAYER_LOWER) {
+            for (int j = 0; j < sizeof(arrow_key_indexes) / sizeof(arrow_key_indexes[0]); j++) {
+                if (i == arrow_key_indexes[j]) {
+                    rgb_matrix_set_color(i, rgb_white.r, rgb_white.g, rgb_white.b);
+                    break;
+                } else {
+                    rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+                }
+            }
+        } else {
+            rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+        }
     }
 
     return true;
