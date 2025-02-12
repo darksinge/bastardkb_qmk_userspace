@@ -172,12 +172,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   KC_K,   KC_L,   CTL_SCLN, KC_QUOT,
+       KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   GUI_K,   KC_L,   CTL_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TT(POINTER),
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, LOWER,   KC_ENT,       KC_SPC,  KC_BSPC,
-                                           KC_LGUI, KC_LCTL,      TD(TD_AMYST)
+                                           KC_LGUI, KC_LCTL,      AMETHYST
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -306,9 +306,10 @@ void rgb_matrix_update_pwm_buffers(void);
 bool rgb_matrix_indicators_user(void) {
     uint8_t layer = get_highest_layer(layer_state); // Retrieve the current layer
 
-    hsv_t red   = {0, 255, 255};
-    hsv_t green = {85, 255, 255};
-    hsv_t blue  = {170, 255, 255};
+    hsv_t red    = {0, 255, 255};
+    hsv_t green  = {85, 255, 255};
+    hsv_t blue   = {170, 255, 255};
+    hsv_t purple = {213, 255, 255};
 
     hsv_t hsv_white = {0, 0, 255};
     hsv_white.v     = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
@@ -320,10 +321,13 @@ bool rgb_matrix_indicators_user(void) {
             hsv = blue;
             break;
         case 1:
-            hsv = red;
+            hsv = purple;
             break;
         case 2:
             hsv = green;
+            break;
+        case 3:
+            hsv = red;
             break;
         default:
             hsv = blue;
