@@ -26,6 +26,7 @@ enum charybdis_keymap_layers {
     LAYER_POINTER,
     LAYER_RAISE,
     LAYER_GAMING,
+    LAYER_DAVINCI_RESOLVE,
 };
 
 /** \brief Automatically enable sniping-mode on the pointer layer. */
@@ -48,6 +49,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define RAISE MO(LAYER_RAISE)
 #define POINTER MO(LAYER_POINTER)
 #define GAMING TO(LAYER_GAMING)
+#define TODV TO(LAYER_DAVINCI_RESOLVE)
 #define AMETHYST S(KC_LALT)
 #define PT_Z LT(LAYER_POINTER, KC_Z)
 #define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
@@ -94,8 +96,11 @@ typedef struct {
 void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data);
 void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data);
 
-#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
-    { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
+#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold)                                        \
+    {                                                                               \
+        .fn        = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, \
+        .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}),               \
+    }
 
 tap_dance_action_t tap_dance_actions[] = {
     [TD_AMYST] = ACTION_TAP_DANCE_TAP_HOLD(KC_ESC, AMETHYST),
@@ -168,7 +173,7 @@ void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_MINS,
+       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    TODV,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -260,6 +265,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                            KC_LCTL, KC_LALT,       TOHOME
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
+
+
+  [LAYER_DAVINCI_RESOLVE] = LAYOUT(
+  // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
+       KC_ESC,  KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_T,            KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,    TOHOME,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       KC_D, KC_N, C(G(KC_L)), G(A(KC_L)), A(KC_Y), A(KC_X),         KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       G(KC_R),   KC_A,   C(G(KC_LBRC)),   G(KC_B),   C(G(KC_RBRC)),    S(KC_BSPC),          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       POINTER,   KC_Z,   KC_J,    KC_SPC,    KC_L,    KC_BSPC,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI,
+  // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
+                                  KC_LSFT, A(KC_V),   KC_ENT,      KC_SPC,  KC_BSPC,
+                                           KC_I, KC_O,       TOHOME
+  //                            ╰───────────────────────────╯ ╰──────────────────╯
+  ),
 };
 // clang-format on
 
@@ -327,6 +348,8 @@ bool rgb_matrix_indicators_user(void) {
             hsv = green;
             break;
         case 3:
+        case 4:
+        case 5:
             hsv = red;
             break;
         default:
