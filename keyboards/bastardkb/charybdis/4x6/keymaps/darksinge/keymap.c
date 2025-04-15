@@ -236,11 +236,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR, QK_BOOT,     QK_BOOT, EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, UG_VALU,
+       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, DPI_RMOD, DPI_MOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_DOT, UG_VALU,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       SNP_TOG, G(KC_A), G(KC_S), G(KC_D), G(KC_F), S_D_MOD,    DPI_MOD, SNP_TOG, XXXXXXX, KC_LGUI, XXXXXXX, UG_VALD,
+       SNP_TOG, G(KC_A), G(KC_S), G(KC_D), G(KC_F), S_D_MOD,     KC_MINS, KC_4, KC_5, KC_6, XXXXXXX, UG_VALD,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,   DPI_RMOD, DRG_TOG, KC_BTN5, KC_BTN4, KC_BTN1, TOHOME,
+       XXXXXXX, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,     KC_0,   KC_1, KC_2, KC_3, KC_BTN1, TOHOME,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_BTN1, KC_BTN2, KC_BTN3,    KC_BTN5, KC_BTN4,
                                            S_MS3, SNP_TOG,      KC_LSFT
