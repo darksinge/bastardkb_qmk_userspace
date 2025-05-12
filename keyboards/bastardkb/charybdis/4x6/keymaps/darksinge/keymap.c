@@ -177,7 +177,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   GUI_K,   KC_L,   CTL_SCLN, KC_QUOT,
+       KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   GUI_K,   ALT_L,   CTL_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TT(POINTER),
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
@@ -234,16 +234,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR, QK_BOOT,     QK_BOOT, EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
+       TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR, QK_BOOT,     QK_BOOT, EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX,  TODV,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, DPI_RMOD, DPI_MOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_DOT, UG_VALU,
+       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, DPI_MOD, DPI_RMOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_ASTR, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       SNP_TOG, G(KC_A), G(KC_S), G(KC_D), G(KC_F), S_D_MOD,     KC_MINS, KC_4, KC_5, KC_6, XXXXXXX, UG_VALD,
+       XXXXXXX, G(KC_A), G(KC_S), XXXXXXX, G(KC_F), S_D_MOD,     KC_MINS, KC_4, KC_5, KC_6, KC_ENT, KC_BTN1,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,     KC_0,   KC_1, KC_2, KC_3, KC_BTN1, TOHOME,
+       XXXXXXX, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,     KC_0,   KC_1, KC_2, KC_3, KC_DOT, SNP_TOG,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_BTN1, KC_BTN2, KC_BTN3,    KC_BTN5, KC_BTN4,
-                                           S_MS3, SNP_TOG,      KC_LSFT
+                                           S_MS3, KC_LOPT,      KC_LSFT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
