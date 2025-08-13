@@ -346,10 +346,10 @@ bool rgb_matrix_indicators_user(void) {
     hsv_t hsv;
     switch (layer) {
         case LAYER_BASE:
-            hsv = blue;
+            hsv = red;
             break;
         case LAYER_LOWER:
-            hsv = orange;
+            hsv = blue;
             break;
         case LAYER_POINTER:
             hsv = green;
@@ -369,15 +369,14 @@ bool rgb_matrix_indicators_user(void) {
             break;
     }
 
-    hsv.v = 50;
+    hsv.v = RGB_MATRIX_MAXIMUM_BRIGHTNESS / 3;
 
     uint8_t arrow_key_indexes[] = {48, 41, 40, 33};
     uint8_t todanger_key_index = 24; // TODANGER key position
     /* uint8_t davinci_key_indexes[] = {52, 25}; // Special keys for DAVINCI_RESOLVE layer */
 
     rgb_t rgb = hsv_to_rgb(hsv);
-    rgb_t rgb_red = hsv_to_rgb(red);
-    rgb_t rgb_blue = hsv_to_rgb(blue);
+    rgb_t rgb_orange = hsv_to_rgb(orange);
 
     for (int i = 0; i < 56; i++) {
         if (layer == LAYER_LOWER) {
@@ -391,7 +390,7 @@ bool rgb_matrix_indicators_user(void) {
             }
             if (!is_arrow_key) {
                 if (i == todanger_key_index) {
-                    rgb_matrix_set_color(i, rgb_red.r, rgb_red.g, rgb_red.b);
+                    rgb_matrix_set_color(i, rgb_orange.r, rgb_orange.g, rgb_orange.b);
                 } else {
                     rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
                 }
