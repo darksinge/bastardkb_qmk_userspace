@@ -211,10 +211,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        G(KC_R),   KC_A,   C(G(KC_LBRC)),   G(KC_B),   C(G(KC_RBRC)),    S(KC_BSPC),          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       POINTER,   KC_Z,   KC_J,    KC_SPC,    KC_L,    KC_BSPC,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI,
+       POINTER,   KC_Z,   KC_J,    KC_SPC,    KC_L,    KC_BSPC,       G(KC_C),    A(KC_V),  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, A(KC_V),   KC_ENT,      KC_SPC,  KC_BSPC,
-                                           KC_I, KC_O,       TOHOME
+                                           KC_LGUI, KC_LCTL,       KC_LALT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
