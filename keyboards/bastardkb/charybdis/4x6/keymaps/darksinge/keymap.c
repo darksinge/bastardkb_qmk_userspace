@@ -326,11 +326,12 @@ void rgb_matrix_update_pwm_buffers(void);
 bool rgb_matrix_indicators_user(void) {
     uint8_t layer = get_highest_layer(layer_state); // Retrieve the current layer
 
-    hsv_t red    = {0, 255, 255};
-    hsv_t green  = {85, 255, 255};
-    hsv_t blue   = {170, 255, 255};
-    hsv_t cyan   = {128, 255, 255};
-    hsv_t orange = {15, 255, 255};
+    uint8_t value = RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2;
+    hsv_t red    = {0, 255, value};
+    hsv_t green  = {85, 255, value};
+    hsv_t blue   = {170, 255, value};
+    hsv_t cyan   = {128, 255, value};
+    hsv_t orange = {39, 255, value};
     // hsv_t yellow = {43, 255, 255};
     // hsv_t pink   = {234, 255, 255};
     // hsv_t teal   = {150, 255, 255};
@@ -346,7 +347,7 @@ bool rgb_matrix_indicators_user(void) {
     hsv_t hsv;
     switch (layer) {
         case LAYER_BASE:
-            hsv = red;
+            hsv = orange;
             break;
         case LAYER_LOWER:
             hsv = blue;
