@@ -110,6 +110,8 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 
 static uint8_t base_layer_hue = 0;
+static uint16_t hue_inc_timer = 0;
+static bool hue_inc_held = false;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t             current_layer;
     tap_dance_action_t *action;
@@ -130,6 +132,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case HUE_INC:
             if (record->event.pressed) {
                 base_layer_hue = (base_layer_hue + 1) % 256;
+                hue_inc_held = true;
+                hue_inc_timer = timer_read();
+            } else {
+                hue_inc_held = false;
             }
             break;
 #ifdef POINTING_DEVICE_ENABLE
@@ -314,6 +320,11 @@ void matrix_scan_user(void) {
         rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
 #        endif // RGB_MATRIX_ENABLE
     }
+    
+    if (hue_inc_held && TIMER_DIFF_16(timer_read(), hue_inc_timer) >= 50) {
+        base_layer_hue = (base_layer_hue + 1) % 256;
+        hue_inc_timer = timer_read();
+    }
 }
 #    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
@@ -324,6 +335,15 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 #    endif // CHARYBDIS_AUTO_SNIPING_ON_LAYER
 #endif     // POINTING_DEVICE_ENABLE
+
+#ifndef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
+void matrix_scan_user(void) {
+    if (hue_inc_held && TIMER_DIFF_16(timer_read(), hue_inc_timer) >= 50) {
+        base_layer_hue = (base_layer_hue + 1) % 256;
+        hue_inc_timer = timer_read();
+    }
+}
+#endif
 
 #ifdef RGB_MATRIX_ENABLE
 // Forward-declare this helper function since it is defined in rgb_matrix.c.
