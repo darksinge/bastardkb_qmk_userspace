@@ -50,7 +50,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define RAISE MO(LAYER_RAISE)
 #define POINTER MO(LAYER_POINTER)
 #define GAMING TO(LAYER_GAMING)
-#define TODV TO(LAYER_DAVINCI_RESOLVE)
+#define TO_DVCI_RSLV TO(LAYER_DAVINCI_RESOLVE)
 #define TODANGER MO(LAYER_DANGER)
 #define AMETHYST S(KC_LALT)
 #define PT_Z LT(LAYER_POINTER, KC_Z)
@@ -86,6 +86,7 @@ enum tap_dance_actions {
 
 enum custom_keycodes {
     VI_SLCT_BLK = SAFE_RANGE,
+    HUE_INC,
 };
 
 typedef struct {
@@ -108,6 +109,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_AMYST] = ACTION_TAP_DANCE_TAP_HOLD(KC_ESC, AMETHYST),
 };
 
+static uint8_t custom_base_hue = 0;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t             current_layer;
     tap_dance_action_t *action;
@@ -123,6 +125,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case VI_SLCT_BLK:
             if (record->event.pressed) {
                 SEND_STRING("V$%");
+            }
+            break;
+        case HUE_INC:
+            if (record->event.pressed) {
+                custom_base_hue = (custom_base_hue + 1) % 256;
             }
             break;
 #ifdef POINTING_DEVICE_ENABLE
@@ -181,7 +188,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   GUI_K,   ALT_L,   CTL_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TT(POINTER),
+       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, HUE_INC,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, LOWER,   KC_ENT,       KC_SPC,  KC_BSPC,
                                            KC_LGUI, KC_LCTL,      AMETHYST
@@ -220,16 +227,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,     QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  TODV,
+       TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,     QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  TO_DVCI_RSLV,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, G(KC_Q), G(KC_W), XXXXXXX, DPI_MOD, DPI_RMOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_ASTR, KC_SLSH,
+       HUE_INC, G(KC_Q), G(KC_W), XXXXXXX, DPI_MOD, DPI_RMOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_ASTR, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, G(KC_A), G(KC_S), XXXXXXX, G(KC_F), S_D_MOD,     KC_MINS, KC_4, KC_5, KC_6, KC_ENT, KC_BTN1,
+       S_MS3,   G(KC_A), G(KC_S), XXXXXXX, G(KC_F), S_D_MOD,     KC_MINS, KC_4, KC_5, KC_6, KC_ENT, KC_BTN1,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        _______, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,     KC_0,   KC_1, KC_2, KC_3, KC_DOT, SNP_TOG,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_BTN1, KC_BTN2, KC_BTN3,    KC_BTN5, KC_BTN4,
-                                           S_MS3, KC_LOPT,      KC_LSFT
+                                           SNP_TOG, KC_LOPT,    KC_LSFT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -331,7 +338,7 @@ bool rgb_matrix_indicators_user(void) {
     hsv_t green  = {85, 255, value};
     hsv_t blue   = {170, 255, value};
     hsv_t cyan   = {128, 255, value};
-    hsv_t orange = {39, 255, value};
+    hsv_t orange = {6, 255, value};
     // hsv_t yellow = {43, 255, 255};
     // hsv_t pink   = {234, 255, 255};
     // hsv_t teal   = {150, 255, 255};
