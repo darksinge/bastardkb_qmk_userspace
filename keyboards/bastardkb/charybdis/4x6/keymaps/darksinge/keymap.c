@@ -109,7 +109,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_AMYST] = ACTION_TAP_DANCE_TAP_HOLD(KC_ESC, AMETHYST),
 };
 
-static uint8_t custom_base_hue = 0;
+static uint8_t base_layer_hue = 0;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t             current_layer;
     tap_dance_action_t *action;
@@ -129,7 +129,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case HUE_INC:
             if (record->event.pressed) {
-                custom_base_hue = (custom_base_hue + 1) % 256;
+                base_layer_hue = (base_layer_hue + 1) % 256;
             }
             break;
 #ifdef POINTING_DEVICE_ENABLE
@@ -330,31 +330,63 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 void rgb_matrix_update_pwm_buffers(void);
 #endif // RGB_MATRIX_ENABLE
 
+typedef struct {
+    const char* name;
+    uint8_t     hue;
+} ColorMap;
+
+static const ColorMap colors[] = {
+    {"red", 0},
+    {"green", 85},
+    {"blue", 170},
+    {"cyan", 128},
+    {"orange", 6},
+    {"yellow", 43},
+    {"pink", 234},
+    {"teal", 150},
+    {"amber", 36},
+    {"indigo", 190},
+    {"lime", 64},
+    {NULL, 0}
+};
+
+uint8_t get_hue_by_name(const char* name) {
+    for (int i = 0; colors[i].name != NULL; i++) {
+        if (strcmp(colors[i].name, name) == 0) {
+            return colors[i].hue;
+        }
+    }
+    return 0; // Default to red
+}
+
+hsv_t get_hsv_by_name(const char* name) {
+    uint8_t hue = get_hue_by_name(name);
+    return (hsv_t){hue, 255, RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2};
+}
+
 bool rgb_matrix_indicators_user(void) {
+    static bool initialized = false;
     uint8_t layer = get_highest_layer(layer_state); // Retrieve the current layer
 
-    uint8_t value = RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2;
-    hsv_t red    = {0, 255, value};
-    hsv_t green  = {85, 255, value};
-    hsv_t blue   = {170, 255, value};
-    hsv_t cyan   = {128, 255, value};
-    hsv_t orange = {6, 255, value};
-    // hsv_t yellow = {43, 255, 255};
-    // hsv_t pink   = {234, 255, 255};
-    // hsv_t teal   = {150, 255, 255};
-    // hsv_t amber  = {36, 255, 255};
-    // hsv_t indigo = {190, 255, 255};
-    // hsv_t lime   = {64, 255, 255};
+    hsv_t red    = get_hsv_by_name("red");
+    hsv_t green  = get_hsv_by_name("green");
+    hsv_t blue   = get_hsv_by_name("blue");
+    hsv_t cyan   = get_hsv_by_name("cyan");
+    hsv_t orange = get_hsv_by_name("orange");
 
-    hsv_t hsv_white = {0, 0, 255};
-    /* hsv_white.v     = RGB_MATRIX_MAXIMUM_BRIGHTNESS; */
-    hsv_white.v     = RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2;
+    hsv_t hsv_white = {0, 0, RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2};
     rgb_t rgb_white = hsv_to_rgb(hsv_white);
 
+    if (!initialized) {
+        base_layer_hue = get_hue_by_name("orange");
+        initialized = true;
+    }
+
+    hsv_t baselayer_hsv = {base_layer_hue, 255, RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2};
     hsv_t hsv;
     switch (layer) {
         case LAYER_BASE:
-            hsv = orange;
+            hsv = baselayer_hsv;
             break;
         case LAYER_LOWER:
             hsv = blue;
