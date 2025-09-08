@@ -22,6 +22,7 @@
 
 enum charybdis_keymap_layers {
     LAYER_BASE = 0,
+    LAYER_COLEMAK,
     LAYER_LOWER,
     LAYER_DAVINCI_RESOLVE,
     LAYER_POINTER,
@@ -47,6 +48,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 #define TOHOME TO(LAYER_BASE)
 #define LOWER MO(LAYER_LOWER)
+#define TO_CLMK TO(LAYER_COLEMAK)
 #define RAISE MO(LAYER_RAISE)
 #define POINTER MO(LAYER_POINTER)
 #define GAMING TO(LAYER_GAMING)
@@ -73,12 +75,20 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define ALT_S LALT_T(KC_S)
 #define GUI_D LGUI_T(KC_D)
 
-#define ALT_Z LALT_T(KC_Z)
+// Left-hand home row mods for Colemak
+#define CTL_A_CM LCTL_T(KC_A)
+#define ALT_R_CM LALT_T(KC_R)
+#define GUI_S_CM LGUI_T(KC_S)
 
 // Right-hand home row mods
 #define GUI_K RGUI_T(KC_K)
 #define ALT_L LALT_T(KC_L)
 #define CTL_SCLN RCTL_T(KC_SCLN)
+
+// Right-hand home row mods for Colemak
+#define GUI_E_CM RGUI_T(KC_E)
+#define ALT_I_CM LALT_T(KC_I)
+#define CTL_O_CM RCTL_T(KC_O)
 
 enum tap_dance_actions {
     TD_AMYST,
@@ -188,17 +198,32 @@ void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_PLUS,
+       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_EQL,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   GUI_K,   ALT_L,   CTL_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, HUE_INC,
+       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TO_CLMK,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, LOWER,   KC_ENT,       KC_SPC,  KC_BSPC,
                                            KC_LGUI, KC_LCTL,      AMETHYST
   //                            ╰───────────────────────────╯ ╰──────────────────╯
+  ),
+
+  [LAYER_COLEMAK] = LAYOUT(
+  // ╭─────────────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────────────╮
+       KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,    KC_5,        KC_6,   KC_7,   KC_8,      KC_9,      KC_0,     KC_EQL,
+  // ├─────────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────────────┤
+       KC_TAB,    KC_Q,      KC_W,      KC_F,      KC_P,    KC_G,        KC_J,   KC_L,   KC_U,      KC_Y,      KC_SCLN,  KC_BSLS,
+  // ├─────────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────────────┤
+       KC_MINS,   CTL_A_CM,  ALT_R_CM,  GUI_S_CM,  KC_T,    KC_D,        KC_H,   KC_N,   GUI_E_CM,  ALT_I_CM,  CTL_O_CM, KC_QUOT,
+  // ├─────────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────────────┤
+       POINTER,   KC_Z,      KC_X,      KC_C,      KC_V,    KC_B,        KC_K,   KC_M,   KC_COMM,   KC_DOT,    KC_SLSH,  TOHOME,
+  // ╰─────────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────────────╯
+                                        KC_LSFT,   LOWER,   KC_ENT,      KC_SPC, KC_BSPC,
+                                        KC_LGUI,   KC_LCTL,              AMETHYST
+  //                               ╰───────────────────────────────╯ ╰────────────────────╯
   ),
 
   [LAYER_LOWER] = LAYOUT(
@@ -320,7 +345,7 @@ void matrix_scan_user(void) {
         rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
 #        endif // RGB_MATRIX_ENABLE
     }
-    
+
     if (hue_inc_held && TIMER_DIFF_16(timer_read(), hue_inc_timer) >= 50) {
         base_layer_hue = (base_layer_hue + 1) % 256;
         hue_inc_timer = timer_read();
@@ -407,6 +432,9 @@ bool rgb_matrix_indicators_user(void) {
     switch (layer) {
         case LAYER_BASE:
             hsv = baselayer_hsv;
+            break;
+        case LAYER_COLEMAK:
+            hsv = red;
             break;
         case LAYER_LOWER:
             hsv = blue;
