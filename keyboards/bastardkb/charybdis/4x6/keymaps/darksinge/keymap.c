@@ -403,8 +403,9 @@ bool rgb_matrix_indicators_user(void) {
     hsv_t cyan   = get_hsv_by_name("cyan");
     hsv_t orange = get_hsv_by_name("orange");
 
-    hsv_t hsv_white = {0, 0, RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2};
-    rgb_t rgb_white = hsv_to_rgb(hsv_white);
+    /* hsv_t hsv_white = {0, 0, RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2}; */
+    /* rgb_t rgb_white = hsv_to_rgb(hsv_white); */
+    rgb_t rgb_red = hsv_to_rgb(red);
 
     if (!initialized) {
         base_layer_hue = get_hue_by_name("orange");
@@ -455,7 +456,7 @@ bool rgb_matrix_indicators_user(void) {
             bool is_arrow_key = false;
             for (int j = 0; j < sizeof(arrow_key_indexes) / sizeof(arrow_key_indexes[0]); j++) {
                 if (i == arrow_key_indexes[j]) {
-                    rgb_matrix_set_color(i, rgb_white.r, rgb_white.g, rgb_white.b);
+                    rgb_matrix_set_color(i, rgb_red.r, rgb_red.g, rgb_red.b);
                     is_arrow_key = true;
                     break;
                 }
