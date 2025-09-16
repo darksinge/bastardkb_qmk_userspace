@@ -109,20 +109,17 @@ typedef struct {
 void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data);
 void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data);
 
-#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold)                                        \
-    {                                                                               \
-        .fn        = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, \
-        .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}),               \
-    }
+#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
+    { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
 
 tap_dance_action_t tap_dance_actions[] = {
     [TD_AMYST] = ACTION_TAP_DANCE_TAP_HOLD(KC_ESC, AMETHYST),
 };
 
-static uint8_t base_layer_hue = 0;
-static uint16_t hue_inc_timer = 0;
-static bool hue_inc_held = false;
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+static uint8_t  base_layer_hue = 0;
+static uint16_t hue_inc_timer  = 0;
+static bool     hue_inc_held   = false;
+bool            process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t             current_layer;
     tap_dance_action_t *action;
 
@@ -142,8 +139,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case HUE_INC:
             if (record->event.pressed) {
                 base_layer_hue = (base_layer_hue + 1) % 256;
-                hue_inc_held = true;
-                hue_inc_timer = timer_read();
+                hue_inc_held   = true;
+                hue_inc_timer  = timer_read();
             } else {
                 hue_inc_held = false;
             }
@@ -267,7 +264,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        _______, DRGSCRL, G(KC_X), G(KC_C), G(KC_V), S_D_RMOD,     KC_0,   KC_1, KC_2, KC_3, KC_DOT, SNP_TOG,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_BTN1, KC_BTN2, KC_BTN3,    KC_BTN5, KC_BTN4,
-                                           SNP_TOG, KC_LOPT,    KC_LSFT
+                                           S_MS3,   KC_LOPT,    KC_LSFT
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -348,7 +345,7 @@ void matrix_scan_user(void) {
 
     if (hue_inc_held && TIMER_DIFF_16(timer_read(), hue_inc_timer) >= 50) {
         base_layer_hue = (base_layer_hue + 1) % 256;
-        hue_inc_timer = timer_read();
+        hue_inc_timer  = timer_read();
     }
 }
 #    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
@@ -365,7 +362,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 void matrix_scan_user(void) {
     if (hue_inc_held && TIMER_DIFF_16(timer_read(), hue_inc_timer) >= 50) {
         base_layer_hue = (base_layer_hue + 1) % 256;
-        hue_inc_timer = timer_read();
+        hue_inc_timer  = timer_read();
     }
 }
 #endif
@@ -376,26 +373,13 @@ void rgb_matrix_update_pwm_buffers(void);
 #endif // RGB_MATRIX_ENABLE
 
 typedef struct {
-    const char* name;
+    const char *name;
     uint8_t     hue;
 } ColorMap;
 
-static const ColorMap colors[] = {
-    {"red", 0},
-    {"green", 85},
-    {"blue", 170},
-    {"cyan", 128},
-    {"orange", 6},
-    {"yellow", 43},
-    {"pink", 234},
-    {"teal", 150},
-    {"amber", 36},
-    {"indigo", 190},
-    {"lime", 64},
-    {NULL, 0}
-};
+static const ColorMap colors[] = {{"red", 0}, {"green", 85}, {"blue", 170}, {"cyan", 128}, {"orange", 6}, {"yellow", 43}, {"pink", 234}, {"teal", 150}, {"amber", 36}, {"indigo", 190}, {"lime", 64}, {NULL, 0}};
 
-uint8_t get_hue_by_name(const char* name) {
+uint8_t get_hue_by_name(const char *name) {
     for (int i = 0; colors[i].name != NULL; i++) {
         if (strcmp(colors[i].name, name) == 0) {
             return colors[i].hue;
@@ -404,14 +388,14 @@ uint8_t get_hue_by_name(const char* name) {
     return 0; // Default to red
 }
 
-hsv_t get_hsv_by_name(const char* name) {
+hsv_t get_hsv_by_name(const char *name) {
     uint8_t hue = get_hue_by_name(name);
     return (hsv_t){hue, 255, RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2};
 }
 
 bool rgb_matrix_indicators_user(void) {
     static bool initialized = false;
-    uint8_t layer = get_highest_layer(layer_state); // Retrieve the current layer
+    uint8_t     layer       = get_highest_layer(layer_state); // Retrieve the current layer
 
     hsv_t red    = get_hsv_by_name("red");
     hsv_t green  = get_hsv_by_name("green");
@@ -424,7 +408,7 @@ bool rgb_matrix_indicators_user(void) {
 
     if (!initialized) {
         base_layer_hue = get_hue_by_name("orange");
-        initialized = true;
+        initialized    = true;
     }
 
     hsv_t baselayer_hsv = {base_layer_hue, 255, RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2};
@@ -460,10 +444,10 @@ bool rgb_matrix_indicators_user(void) {
     hsv.v = RGB_MATRIX_MAXIMUM_BRIGHTNESS / 3;
 
     uint8_t arrow_key_indexes[] = {48, 41, 40, 33};
-    uint8_t todanger_key_index = 24; // TODANGER key position
+    uint8_t todanger_key_index  = 24; // TODANGER key position
     /* uint8_t davinci_key_indexes[] = {52, 25}; // Special keys for DAVINCI_RESOLVE layer */
 
-    rgb_t rgb = hsv_to_rgb(hsv);
+    rgb_t rgb        = hsv_to_rgb(hsv);
     rgb_t rgb_orange = hsv_to_rgb(orange);
 
     for (int i = 0; i < 56; i++) {
@@ -499,7 +483,6 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
         }
     }
-
 
     return true;
 }
