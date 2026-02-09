@@ -97,6 +97,7 @@ enum tap_dance_actions {
 enum custom_keycodes {
     VI_SLCT_BLK = SAFE_RANGE,
     HUE_INC,
+    AP_GLOB,
 };
 
 typedef struct {
@@ -145,6 +146,9 @@ bool            process_record_user(uint16_t keycode, keyrecord_t *record) {
                 hue_inc_held = false;
             }
             break;
+        case AP_GLOB:
+            host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
+            return false;
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_SNIPING_ON_LAYER
         case KC_BTN3:
@@ -233,7 +237,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, GAMING,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                 C(KC_UP), _______, KC_CAPS,      KC_SPC, XXXXXXX,
+                                 C(KC_UP), _______, KC_CAPS,      KC_SPC, AP_GLOB,
                                            XXXXXXX, TODANGER,    S(KC_ENT)
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
