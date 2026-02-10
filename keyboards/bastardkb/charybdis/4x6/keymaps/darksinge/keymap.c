@@ -26,8 +26,8 @@ enum charybdis_keymap_layers {
     LAYER_LOWER,
     LAYER_DAVINCI_RESOLVE,
     LAYER_POINTER,
-    LAYER_RAISE,
-    LAYER_GAMING,
+    /* LAYER_RAISE, */
+    /* LAYER_GAMING, */
     LAYER_DANGER,
 };
 
@@ -49,11 +49,11 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define TOHOME TO(LAYER_BASE)
 #define LOWER MO(LAYER_LOWER)
 #define TO_CLMK TO(LAYER_COLEMAK)
-#define RAISE MO(LAYER_RAISE)
+/* #define RAISE MO(LAYER_RAISE) */
 #define POINTER MO(LAYER_POINTER)
-#define GAMING TO(LAYER_GAMING)
+/* #define TO_GAMING TO(LAYER_GAMING) */
 #define TO_DVCI_RSLV TO(LAYER_DAVINCI_RESOLVE)
-#define TODANGER MO(LAYER_DANGER)
+#define TO_DANGER MO(LAYER_DANGER)
 #define AMETHYST S(KC_LALT)
 #define PT_Z LT(LAYER_POINTER, KC_Z)
 #define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
@@ -235,10 +235,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        RGB_TOG,  KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_TAB,      KC_MINS,  KC_EQL,   KC_GT,   KC_PIPE, KC_TILD, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, GAMING,
+       KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                  C(KC_UP), _______, KC_CAPS,      KC_SPC, AP_GLOB,
-                                           XXXXXXX, TODANGER,    S(KC_ENT)
+                                           XXXXXXX, TO_DANGER,    S(KC_ENT)
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -272,37 +272,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
-  // NOTE: Not using this layer, but might keep it for future use.
-  [LAYER_RAISE] = LAYOUT(
-  // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-        KC_F12,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLU,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_MPLY, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, XXXXXXX,    XXXXXXX, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, KC_MUTE,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_MPRV, KC_HOME, KC_PGUP, KC_PGDN,  KC_END, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLD,
-  // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  _______, _______, XXXXXXX,    _______, XXXXXXX,
-                                           _______, _______,    XXXXXXX
-  //                            ╰───────────────────────────╯ ╰──────────────────╯
-  ),
+  /* // NOTE: Not using this layer, but might keep it for future use. */
+  /* [LAYER_RAISE] = LAYOUT( */
+  /* // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮ */
+  /*       KC_F12,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11, */
+  /* // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤ */
+  /*      KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLU, */
+  /* // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤ */
+  /*      KC_MPLY, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, XXXXXXX,    XXXXXXX, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, KC_MUTE, */
+  /* // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤ */
+  /*      KC_MPRV, KC_HOME, KC_PGUP, KC_PGDN,  KC_END, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLD, */
+  /* // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯ */
+  /*                                 _______, _______, XXXXXXX,    _______, XXXXXXX, */
+  /*                                          _______, _______,    XXXXXXX */
+  /* //                            ╰───────────────────────────╯ ╰──────────────────╯ */
+  /* ), */
 
 
-  [LAYER_GAMING] = LAYOUT(
-  // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_MINS,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_MINS,   KC_A,   KC_S,   KC_D,   KC_F,    KC_G,          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI,
-  // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  KC_LSFT, KC_SPC,   KC_ENT,      KC_SPC,  KC_BSPC,
-                                           KC_LCTL, KC_LALT,       TOHOME
-  //                            ╰───────────────────────────╯ ╰──────────────────╯
-  ),
+  /* [LAYER_GAMING] = LAYOUT( */
+  /* // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮ */
+  /*      KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,   KC_8,   KC_9,   KC_0,    KC_MINS, */
+  /* // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤ */
+  /*      KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS, */
+  /* // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤ */
+  /*      KC_MINS,   KC_A,   KC_S,   KC_D,   KC_F,    KC_G,          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT, */
+  /* // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤ */
+  /*      POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI, */
+  /* // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯ */
+  /*                                 KC_LSFT, KC_SPC,   KC_ENT,      KC_SPC,  KC_BSPC, */
+  /*                                          KC_LCTL, KC_LALT,       TOHOME */
+  /* //                            ╰───────────────────────────╯ ╰──────────────────╯ */
+  /* ), */
 
   [LAYER_DANGER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
@@ -315,7 +315,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX,
-  //                                                👇🏻from TODANGER key on LAYER_LOWER
+  //                                                👇🏻from TO_DANGER key on LAYER_LOWER
                                            XXXXXXX, _______,    XXXXXXX
   //                            ╰───────────────────────────╯ ╰──────────────────╯
     )
@@ -381,7 +381,7 @@ typedef struct {
     uint8_t     hue;
 } ColorMap;
 
-static const ColorMap colors[] = {{"red", 0}, {"green", 85}, {"blue", 170}, {"cyan", 128}, {"orange", 6}, {"yellow", 43}, {"pink", 234}, {"teal", 150}, {"amber", 36}, {"indigo", 190}, {"lime", 64}, {NULL, 0}};
+static const ColorMap colors[] = {{"red", 0}, {"green", 85}, {"blue", 170}, {"cyan", 128}, {"orange", 6}, {"yellow", 43}, {"pink", 234}, {"purple", 200}, {"teal", 150}, {"amber", 36}, {"indigo", 190}, {"lime", 64}, {NULL, 0}};
 
 uint8_t get_hue_by_name(const char *name) {
     for (int i = 0; colors[i].name != NULL; i++) {
@@ -416,14 +416,13 @@ bool rgb_matrix_indicators_user(void) {
         initialized    = true;
     }
 
-    hsv_t baselayer_hsv = {base_layer_hue, 255, RGB_MATRIX_MAXIMUM_BRIGHTNESS / 2};
     hsv_t hsv;
     switch (layer) {
         case LAYER_BASE:
-            hsv = baselayer_hsv;
+            hsv = get_hsv_by_name("purple");
             break;
         case LAYER_COLEMAK:
-            hsv = red;
+            hsv = orange;
             break;
         case LAYER_LOWER:
             hsv = blue;
@@ -431,10 +430,10 @@ bool rgb_matrix_indicators_user(void) {
         case LAYER_POINTER:
             hsv = green;
             break;
-        case LAYER_RAISE:
-        case LAYER_GAMING:
-            hsv = red;
-            break;
+        /* case LAYER_RAISE: */
+        /* case LAYER_GAMING: */
+        /*     hsv = red; */
+        /*     break; */
         case LAYER_DAVINCI_RESOLVE:
             hsv = cyan;
             break;
@@ -449,7 +448,7 @@ bool rgb_matrix_indicators_user(void) {
     hsv.v = RGB_MATRIX_MAXIMUM_BRIGHTNESS / 3;
 
     uint8_t arrow_key_indexes[] = {48, 41, 40, 33};
-    uint8_t todanger_key_index  = 24; // TODANGER key position
+    uint8_t to_danger_key_index  = 24; // TO_DANGER key position
     /* uint8_t davinci_key_indexes[] = {52, 25}; // Special keys for DAVINCI_RESOLVE layer */
 
     rgb_t rgb        = hsv_to_rgb(hsv);
@@ -466,7 +465,7 @@ bool rgb_matrix_indicators_user(void) {
                 }
             }
             if (!is_arrow_key) {
-                if (i == todanger_key_index) {
+                if (i == to_danger_key_index) {
                     rgb_matrix_set_color(i, rgb_orange.r, rgb_orange.g, rgb_orange.b);
                 } else {
                     rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
