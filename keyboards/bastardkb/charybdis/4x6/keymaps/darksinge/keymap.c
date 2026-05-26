@@ -23,7 +23,7 @@
 enum charybdis_keymap_layers {
     LAYER_BASE = 0,
     LAYER_COLEMAK,
-    LAYER_LOWER,
+    LAYER_SYMBOLS,
     LAYER_DAVINCI_RESOLVE,
     LAYER_POINTER,
     /* LAYER_RAISE, */
@@ -33,6 +33,7 @@ enum charybdis_keymap_layers {
 
 /** \brief Automatically enable sniping-mode on the pointer layer. */
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_POINTER
+#define CHARYBDIS_MINIMUM_SNIPING_DPI 400
 
 #ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 static uint16_t auto_pointer_layer_timer = 0;
@@ -47,7 +48,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
 #define TOHOME TO(LAYER_BASE)
-#define LOWER MO(LAYER_LOWER)
+#define LOWER MO(LAYER_SYMBOLS)
 #define TO_CLMK TO(LAYER_COLEMAK)
 /* #define RAISE MO(LAYER_RAISE) */
 #define POINTER MO(LAYER_POINTER)
@@ -97,7 +98,7 @@ enum tap_dance_actions {
 enum custom_keycodes {
     VI_SLCT_BLK = SAFE_RANGE,
     HUE_INC,
-    AP_GLOB,
+    APPL_GLOBE,
 };
 
 typedef struct {
@@ -146,7 +147,7 @@ bool            process_record_user(uint16_t keycode, keyrecord_t *record) {
                 hue_inc_held = false;
             }
             break;
-        case AP_GLOB:
+        case APPL_GLOBE:
             host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
             return false;
 #ifdef POINTING_DEVICE_ENABLE
@@ -205,7 +206,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_MINS,   CTL_A,   ALT_S,   GUI_D,   KC_F,    KC_G,       KC_H,    KC_J,   GUI_K,   ALT_L,   CTL_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, TO_CLMK,
+       POINTER,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,  KC_COMM, KC_DOT, KC_SLSH, CW_TOGG,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LSFT, LOWER,   KC_ENT,       KC_SPC,  KC_BSPC,
                                            KC_LGUI, KC_LCTL,      AMETHYST
@@ -227,7 +228,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                               ╰───────────────────────────────╯ ╰────────────────────╯
   ),
 
-  [LAYER_LOWER] = LAYOUT(
+  [LAYER_SYMBOLS] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        C(KC_UP),  KC_F1,   KC_F2,    KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,    KC_F8,    KC_F9,   KC_F10, KC_F11,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -235,10 +236,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        RGB_TOG,  KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_TAB,      KC_MINS,  KC_EQL,   KC_GT,   KC_PIPE, KC_TILD, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, XXXXXXX,
+       KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, TO_CLMK,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                 C(KC_UP), _______, KC_CAPS,      KC_SPC, AP_GLOB,
-                                           XXXXXXX, TO_DANGER,    S(KC_ENT)
+                                 C(KC_UP), _______, KC_CAPS,      KC_SPC, KC_ESC,
+                                           APPL_GLOBE, TO_DANGER,    S(KC_ENT)
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -248,7 +249,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_D, KC_N, C(G(KC_L)), G(A(KC_L)), A(KC_Y), A(KC_X),         KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       G(KC_R),   KC_A,   S(G(KC_LBRC)),   G(KC_B),   S(G(KC_RBRC)),    S(KC_BSPC),          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
+       G(KC_R),   KC_A,   LALT_T(S(G(KC_LBRC))),   G(KC_B),   S(G(KC_RBRC)),    S(KC_BSPC),          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        POINTER,   KC_Z,   KC_J,    KC_SPC,    KC_L,    KC_BSPC,       G(KC_C),    A(KC_V),  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
@@ -261,7 +262,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,     QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  TO_DVCI_RSLV,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       HUE_INC, G(KC_Q), G(KC_W), XXXXXXX, DPI_MOD, DPI_RMOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_ASTR, KC_SLSH,
+       HUE_INC, C(KC_LEFT), G(KC_W), C(KC_RIGHT), DPI_MOD, DPI_RMOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_ASTR, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_LGUI,   G(KC_A), G(KC_S), XXXXXXX, G(KC_F), S_D_MOD,     KC_MINS, KC_4, KC_5, KC_6, KC_ENT, KC_BTN1,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -315,7 +316,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX,
-  //                                                👇🏻from TO_DANGER key on LAYER_LOWER
+  //                                                👇🏻from TO_DANGER key on LAYER_SYMBOLS
                                            XXXXXXX, _______,    XXXXXXX
   //                            ╰───────────────────────────╯ ╰──────────────────╯
     )
@@ -424,7 +425,7 @@ bool rgb_matrix_indicators_user(void) {
         case LAYER_COLEMAK:
             hsv = orange;
             break;
-        case LAYER_LOWER:
+        case LAYER_SYMBOLS:
             hsv = blue;
             break;
         case LAYER_POINTER:
@@ -455,7 +456,7 @@ bool rgb_matrix_indicators_user(void) {
     rgb_t rgb_orange = hsv_to_rgb(orange);
 
     for (int i = 0; i < 56; i++) {
-        if (layer == LAYER_LOWER) {
+        if (layer == LAYER_SYMBOLS) {
             bool is_arrow_key = false;
             for (int j = 0; j < sizeof(arrow_key_indexes) / sizeof(arrow_key_indexes[0]); j++) {
                 if (i == arrow_key_indexes[j]) {
