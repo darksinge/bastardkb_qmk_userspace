@@ -56,6 +56,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define TO_DVCI_RSLV TO(LAYER_DAVINCI_RESOLVE)
 #define TO_DANGER MO(LAYER_DANGER)
 #define AMETHYST S(KC_LALT)
+#define TMUX_PREFIX C(KC_B)
 #define PT_Z LT(LAYER_POINTER, KC_Z)
 #define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
 #define S_MS3 S(KC_BTN3)
@@ -238,8 +239,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, TO_CLMK,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                 C(KC_UP), _______, KC_CAPS,      KC_SPC, KC_ESC,
-                                           APPL_GLOBE, TO_DANGER,    S(KC_ENT)
+                              TMUX_PREFIX, _______, KC_CAPS,      KC_SPC, KC_ESC,
+                                        APPL_GLOBE, TO_DANGER,    S(KC_ENT)
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
