@@ -56,7 +56,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define TO_DVCI_RSLV TO(LAYER_DAVINCI_RESOLVE)
 #define TO_DANGER MO(LAYER_DANGER)
 #define AMETHYST S(KC_LALT)
-#define TMUX_PREFIX C(KC_B)
+#define TMUX_PREFIX C(KC_S)
 #define PT_Z LT(LAYER_POINTER, KC_Z)
 #define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
 #define S_MS3 S(KC_BTN3)
@@ -100,6 +100,8 @@ enum custom_keycodes {
     VI_SLCT_BLK = SAFE_RANGE,
     HUE_INC,
     APPL_GLOBE,
+    CC_PICKER,
+    SESSION_PICKER,
 };
 
 typedef struct {
@@ -151,6 +153,18 @@ bool            process_record_user(uint16_t keycode, keyrecord_t *record) {
         case APPL_GLOBE:
             host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
             return false;
+        case CC_PICKER:
+            if (record->event.pressed) {
+                tap_code16(TMUX_PREFIX);
+                tap_code16(S(KC_C));
+            }
+            break;
+        case SESSION_PICKER:
+            if (record->event.pressed) {
+                tap_code16(TMUX_PREFIX);
+                tap_code16(KC_S);
+            }
+            break;
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_SNIPING_ON_LAYER
         case KC_BTN3:
@@ -261,7 +275,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       TOHOME,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,     QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  TO_DVCI_RSLV,
+       SESSION_PICKER, CC_PICKER, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,     QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  TO_DVCI_RSLV,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        HUE_INC, C(KC_LEFT), G(KC_W), C(KC_RIGHT), DPI_MOD, DPI_RMOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_ASTR, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
