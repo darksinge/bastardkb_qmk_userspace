@@ -59,7 +59,9 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define TMUX_PREFIX C(KC_S)
 #define PT_Z LT(LAYER_POINTER, KC_Z)
 #define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
-#define S_MS3 S(KC_BTN3)
+#define S_MS3 S(KC_BTN3) // Shift+MB3 for Panning in Fusion360
+#define WS_TOG RGUI(RSFT(RCTL(RALT(KC_T)))) // Whisper Speak Toggle
+#define CB_HIST G(C(A(KC_V))) // Open Clipboard History (Vorssaint )
 
 #ifndef POINTING_DEVICE_ENABLE
 #    define DRGSCRL KC_NO
@@ -247,35 +249,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        C(KC_UP),  KC_F1,   KC_F2,    KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,    KC_F8,    KC_F9,   KC_F10, KC_F11,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       RGB_MOD, S(KC_ENT), KC_AT, KC_LCBR, KC_RCBR, VI_SLCT_BLK, S(A(KC_MINS)),  KC_PLUS, KC_ASTR,  KC_EXLM, KC_RBRC, KC_F12,
+       RGB_MOD, WS_TOG, KC_AT, KC_LCBR, KC_RCBR, VI_SLCT_BLK, S(A(KC_MINS)),  KC_PLUS, KC_ASTR,  KC_EXLM, KC_RBRC, KC_F12,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        RGB_TOG,  KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_TAB,      KC_MINS,  KC_EQL,   KC_GT,   KC_PIPE, KC_TILD, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_DEL, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_GRAVE,      KC_AMPR, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, TO_CLMK,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                              TMUX_PREFIX, _______, KC_CAPS,      KC_SPC, KC_ESC,
+                              TMUX_PREFIX, _______, KC_CAPS,      KC_SPC, SESSION_PICKER,
                                         APPL_GLOBE, TO_DANGER,    S(KC_ENT)
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
   [LAYER_DAVINCI_RESOLVE] = LAYOUT(
-  // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_ESC,  KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_T,            KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,    TOHOME,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_D, KC_N, C(G(KC_L)), G(A(KC_L)), A(KC_Y), A(KC_X),         KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       G(KC_R),   KC_A,   LALT_T(S(G(KC_LBRC))),   G(KC_B),   S(G(KC_RBRC)),    S(KC_BSPC),          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
-  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       POINTER,   KC_Z,   KC_J,    KC_SPC,    KC_L,    KC_BSPC,       G(KC_C),    A(KC_V),  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI,
-  // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  KC_LSFT, A(KC_V),   KC_ENT,      KC_SPC,  KC_BSPC,
-                                           KC_LGUI, KC_LCTL,       KC_LALT
-  //                            ╰───────────────────────────╯ ╰──────────────────╯
+  // ╭──────────────────────────────────────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
+       KC_ESC,  KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_T,                                             KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,    TOHOME,
+  // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       KC_D,      KC_N,   C(G(KC_L)),              G(A(KC_L)), A(KC_Y),          A(KC_X),         KC_Y,    KC_U,   KC_I,   KC_O,   KC_P,    KC_BSLS,
+  // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       G(KC_R),   KC_A,   S(G(KC_LBRC)),           G(KC_B),    S(G(KC_RBRC)),    S(KC_BSPC),          KC_H,    KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,
+  // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       POINTER,   KC_Z,   KC_J,                    KC_SPC,     KC_L,             KC_BSPC,             G(KC_C),    A(KC_V),  KC_COMM, KC_DOT, KC_SLSH, KC_LGUI,
+  // ╰──────────────────────────────────────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
+                                                                KC_LSFT, A(KC_V),   KC_ENT,      KC_SPC,  KC_BSPC,
+                                                                          KC_LGUI, KC_LCTL,       KC_LALT
+  //                                                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       SESSION_PICKER, CC_PICKER, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,     QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  TO_DVCI_RSLV,
+       CB_HIST, CC_PICKER, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,     QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  TO_DVCI_RSLV,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        HUE_INC, C(KC_LEFT), G(KC_W), C(KC_RIGHT), DPI_MOD, DPI_RMOD,    KC_PLUS, KC_7, KC_8, KC_9, KC_ASTR, KC_SLSH,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
